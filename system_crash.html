@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Critical Error</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            font-size: 14px;
+            overflow: hidden;
+            user-select: none;
+        }
+        #terminal {
+            height: 90vh;
+            overflow-y: hidden;
+        }
+        .red { color: #ff0000; font-weight: bold; }
+        .white { color: #ffffff; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        
+        /* Layar Biru (BSOD) Palsu */
+        #bsod {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #0078d7;
+            color: white;
+            padding: 100px 50px;
+            font-family: sans-serif;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body onclick="startInfection()">
+
+    <div id="terminal">
+        <p id="start-text">--- SYSTEM ENCRYPTION DETECTED ---</p>
+        <p class="blink">KLIK DI MANA SAJA UNTUK LANJUTKAN UPDATE...</p>
+    </div>
+
+    <div id="bsod">
+        <h1 style="font-size: 100px;">:(</h1>
+        <h2>Your PC/Device ran into a problem and needs to restart.</h2>
+        <p>We're just collecting some error info, and then we'll restart for you.</p>
+        <p>0% complete</p>
+        <p style="font-size: 12px; margin-top: 50px;">Stop Code: CRITICAL_PROCESS_DIED<br>What failed: ndis.sys</p>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const logs = [
+            "[INFO] Connecting to C&C Server...",
+            "[SUCCESS] Connection Established.",
+            "[INFO] Scanning Internal Storage...",
+            "[WARN] 4.342 Private Photos Found.",
+            "[WARN] Banking Apps Detected.",
+            "[INFO] Extracting Contacts list...",
+            "[DANGER] Trojan.Win32.Generic installed.",
+            "[INFO] Deleting /InternalStorage/DCIM/Camera...",
+            "[INFO] Deleting /InternalStorage/WhatsApp/Media...",
+            "[ERROR] SYSTEM OVERHEAT!",
+            "[FATAL] KERNEL_SECURITY_CHECK_FAILURE",
+            "REBOOTING IN 3...",
+            "REBOOTING IN 2...",
+            "REBOOTING IN 1..."
+        ];
+
+        let index = 0;
+
+        function addLine(text) {
+            const p = document.createElement('p');
+            if (text.includes("DANGER") || text.includes("ERROR") || text.includes("FATAL")) {
+                p.className = "red";
+            } else if (text.includes("SUCCESS")) {
+                p.className = "white";
+            }
+            p.innerHTML = text;
+            terminal.appendChild(p);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function startInfection() {
+            document.getElementById('start-text').style.display = 'none';
+            // Minta fullscreen agar makin seram
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            }
+
+            const interval = setInterval(() => {
+                if (index < logs.length) {
+                    addLine(logs[index]);
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('bsod').style.display = 'block';
+                        triggerAlerts();
+                    }, 1000);
+                }
+            }, 600);
+        }
+
+        function triggerAlerts() {
+            while(true) {
+                alert("SYSTEM FAILURE: DATA HAS BEEN WIPED!");
+            }
+        }
+    </script>
+</body>
+</html>
